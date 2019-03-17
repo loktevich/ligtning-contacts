@@ -1,0 +1,23 @@
+<template>
+
+    <div class="slds-p-around_none">
+        <lightning-layout>
+            <lightning-layout-item flexibility="auto">
+                <lightning-input type="search" onkeyup={updateSearchName} class="search-input">
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" padding="horizontal-small">
+                <lightning-button variant="brand" label="Search" onclick={searchByName}>
+                </lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+
+
+    <div class="slds-p-vertical_small">
+        <lightning-datatable key-field="id" data={contacts} columns={columns} sorted-by={sortedBy}
+            sorted-direction={sortDirection} onsort={updateColumnSorting}>
+        </lightning-datatable>
+    </div>
+</template>
