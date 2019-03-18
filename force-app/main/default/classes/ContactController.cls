@@ -26,8 +26,8 @@ public with sharing class ContactController {
 
         // WHERE clause
         if (searchName == '') {
-            queryString += ' WHERE Name LIKE ' + searchName;
-            queryCountString += ' WHERE Name LIKE ' + searchName;
+            queryString += ' WHERE Name LIKE \'%' + searchName + '%\'';
+            queryCountString += ' WHERE Name LIKE \'%' + searchName + '%\'';
         }
 
         // Sorting
