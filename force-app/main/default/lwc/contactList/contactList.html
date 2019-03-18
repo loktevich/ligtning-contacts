@@ -3,7 +3,7 @@
     <div class="slds-p-around_none">
         <lightning-layout>
             <lightning-layout-item flexibility="auto">
-                <lightning-input type="search" onkeyup={updateSearchName} class="search-input">
+                <lightning-input type="search" onchange={updateSearchName} class="search-input">
                 </lightning-input>
             </lightning-layout-item>
             <lightning-layout-item flexibility="auto" padding="horizontal-small">
@@ -15,12 +15,12 @@
 
     <div class="slds-p-vertical_small">
         <template if:true={contacts}>
-            <lightning-datatable key-field="id" data={contacts.records} columns={columns} sorted-by={sortedBy}
-                sorted-direction={sortDirection} onsort={updateColumnSorting}>
-            </lightning-datatable>
             <c-paginator page-number={pageNumber} page-size={pageSize} total-records={contacts.totalRecords}
                 onprevious={previousPage} onnext={nextPage}>
             </c-paginator>
+            <lightning-datatable key-field="id" data={contacts.records} columns={columns} sorted-by={sortedBy}
+                sorted-direction={sortDirection} onsort={updateColumnSorting}>
+            </lightning-datatable>
         </template>
         <template if:true={error}>
             <p>Error retrieving data</p>

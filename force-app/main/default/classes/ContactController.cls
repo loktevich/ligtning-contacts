@@ -25,7 +25,7 @@ public with sharing class ContactController {
         String queryCountString = baseCountString;
 
         // WHERE clause
-        if (searchName == '') {
+        if (searchName != '') {
             queryString += ' WHERE Name LIKE \'%' + searchName + '%\'';
             queryCountString += ' WHERE Name LIKE \'%' + searchName + '%\'';
         }

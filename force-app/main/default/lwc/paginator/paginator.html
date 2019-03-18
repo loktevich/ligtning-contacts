@@ -1,6 +1,6 @@
 <template>
     <lightning-layout vertical-align="center" class="slds-m-top_x-small">
-        <lightning-layout-item size="2">
+        <lightning-layout-item>
             <template if:false={isFirstPage}>
                 <lightning-button-icon
                     icon-name="utility:chevronleft"
@@ -8,10 +8,10 @@
                 ></lightning-button-icon>
             </template>
         </lightning-layout-item>
-        <lightning-layout-item size="8" class="nav-info">
-            {totalItemCount} items • page {currentPageNumber} of {totalPages}
+        <lightning-layout-item>
+            {totalRecords} records • page {currentPageNumber} of {totalPages}
         </lightning-layout-item>
-        <lightning-layout-item size="2" class="nav-next">
+        <lightning-layout-item>
             <template if:false={isLastPage}>
                 <lightning-button-icon
                     icon-name="utility:chevronright"
