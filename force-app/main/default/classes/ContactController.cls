@@ -1,11 +1,11 @@
 public with sharing class ContactController {
     public static List<SimpleContact> getContacts(String queryString) {
-        List<Contact> contactList = Database.countQuery(queryString);
+        List<Contact> contactList = Database.query(queryString);
         return createSimpleContact(contactList);
     }
 
     public static Integer getTotalRecords(String queryString) {
-        return Database.query(queryString);
+        return Database.countQuery(queryString);
     }
     // SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact ORDER BY Name asc LIMIT 10 OFFSET 0
     // SELECT count() FROM Contact WHERE Name LIKE '%a%'
