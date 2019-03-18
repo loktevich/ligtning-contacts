@@ -11,21 +11,31 @@ const COLUMNS = [
     { label: 'Created Date', fieldName: 'CreatedDate', type: 'date', sortable: true }
 ];
 
+const PAGE_SIZE = 10;
+
 export default class ContactList extends LightningElement {
     columns = COLUMNS;
+    sortField = 'Name';
+    @track contacts;
     @track error;
     @track searchName = '';
-    @track sortedBy = 'Name';
+    @track sortedBy = this.sortField;
     @track sortDirection = 'asc';
-
-    @track contacts;
+    @track pageSize = PAGE_SIZE;
+    @track pageNumber = 1;
 
     connectedCallback() {
-        this.loadContacts(this.sortedBy);
+        this.loadContacts();
     }
 
-    loadContacts(sortedBy) {
-        searchContacts({ searchName: this.searchName, sortedBy: sortedBy, sortDirection: this.sortDirection })
+    loadContacts() {
+        searchContacts({
+            searchName: this.searchName,
+            sortedBy: this.sortField,
+            sortDirection: this.sortDirection,
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize
+        })
             .then(result => {
                 this.contacts = result;
                 this.error = undefined;
@@ -39,27 +49,27 @@ export default class ContactList extends LightningElement {
     updateColumnSorting(event) {
         const sortDirection = event.detail.sortDirection;
         const fieldName = event.detail.fieldName;
-        let sortField = fieldName;
-        switch (sortField) {
+        switch (fieldName) {
             case 'ContactLevel':
-                sortField = 'Contact_Level__c';
+                this.sortField = 'Contact_Level__c';
                 break;
             case 'AccountName':
-                sortField = 'Account.Name';
+                this.sortField = 'Account.Name';
                 break;
             case 'OwnerName':
-                sortField = 'Owner.Name';
+                this.sortField = 'Owner.Name';
                 break;
             case 'CreatedBy':
-                sortField = 'CreatedBy.Name';
+                this.sortField = 'CreatedBy.Name';
                 break;
             default:
+                this.sortField = fieldName;
                 break;
         }
 
         this.sortDirection = sortDirection;
         this.sortedBy = fieldName;
-        this.loadContacts(sortField);
+        this.loadContacts();
     }
 
     updateSearchName(event) {
@@ -67,7 +77,16 @@ export default class ContactList extends LightningElement {
     }
 
     searchByName() {
-        this.loadContacts(this.sortedBy);
+        this.loadContacts();
     }
 
+    previousPage() {
+        this.pageNumber--;
+        this.loadContacts();
+    }
+
+    nextPage() {
+        this.pageNumber++;
+        this.loadContacts();
+    }
 }

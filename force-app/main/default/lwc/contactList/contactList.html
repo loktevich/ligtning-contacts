@@ -13,11 +13,18 @@
         </lightning-layout>
     </div>
 
-
-
     <div class="slds-p-vertical_small">
-        <lightning-datatable key-field="id" data={contacts} columns={columns} sorted-by={sortedBy}
-            sorted-direction={sortDirection} onsort={updateColumnSorting}>
-        </lightning-datatable>
+        <template if:true={contacts}>
+            <lightning-datatable key-field="id" data={contacts.records} columns={columns} sorted-by={sortedBy}
+                sorted-direction={sortDirection} onsort={updateColumnSorting}>
+            </lightning-datatable>
+            <c-paginator page-number={pageNumber} page-size={pageSize} total-records={contacts.totalRecords}
+                onprevious={previousPage} onnext={nextPage}>
+            </c-paginator>
+        </template>
+        <template if:true={error}>
+            <p>Error retrieving data</p>
+        </template>
     </div>
+
 </template>
