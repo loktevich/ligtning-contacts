@@ -38,7 +38,9 @@ public with sharing class ContactController {
         queryString += ' OFFSET ' + (pageNumber - 1) * pageSize;
 
         pagedResult.records = getContacts(queryString);
-        pagedResult.totalRecords = getTotal(queryCountString);
+        pagedResult.totalRecords = getTotalRecords(queryCountString);
+
+        return pagedResult;
     }
 
     static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
