@@ -1,5 +1,4 @@
 <template>
-
     <div class="slds-p-around_none">
         <lightning-layout>
             <lightning-layout-item flexibility="auto">
@@ -19,12 +18,12 @@
                 onprevious={previousPage} onnext={nextPage}>
             </c-paginator>
             <lightning-datatable key-field="id" data={contacts.records} columns={columns} sorted-by={sortedBy}
-                sorted-direction={sortDirection} onsort={updateColumnSorting}>
+                sorted-direction={sortDirection} onsort={updateColumnSorting} onrowaction={handleRowAction}
+                hide-checkbox-column>
             </lightning-datatable>
         </template>
         <template if:true={error}>
             <p>Error retrieving data</p>
         </template>
     </div>
-
 </template>

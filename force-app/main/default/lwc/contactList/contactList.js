@@ -1,5 +1,7 @@
 import { LightningElement, track } from 'lwc';
 import searchContacts from '@salesforce/apex/ContactController.searchContacts';
+import { deleteRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 
 const COLUMNS = [
     { label: 'Name', fieldName: 'Name', sortable: true },
@@ -8,7 +10,8 @@ const COLUMNS = [
     { label: 'Account', fieldName: 'AccountName', sortable: true },
     { label: 'Owner', fieldName: 'OwnerName', sortable: true },
     { label: 'Created By', fieldName: 'CreatedBy', sortable: true },
-    { label: 'Created Date', fieldName: 'CreatedDate', type: 'date', sortable: true }
+    { label: 'Created Date', fieldName: 'CreatedDate', type: 'date', sortable: true },
+    { fieldName: 'delete', type: 'button', initialWidth: 120, typeAttributes: { label: 'Delete', name: 'delete', iconName: 'utility:delete' } }
 ];
 
 const PAGE_SIZE = 10;
@@ -89,4 +92,33 @@ export default class ContactList extends LightningElement {
         this.pageNumber++;
         this.loadContacts();
     }
+
+    handleRowAction(event) {
+        const row = event.detail.row;
+        this.deleteRow(row)
+    }
+
+    deleteRow(row) {
+        const recordId = row.Id;
+        deleteRecord(recordId)
+            .then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Contact deleted',
+                        variant: 'success'
+                    })
+                );
+            })
+            .catch(error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error deleting record',
+                        message: error.message,
+                        variant: 'error'
+                    })
+                );
+            });
+    }
+
 }

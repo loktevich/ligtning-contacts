@@ -1,22 +1,16 @@
 <template>
-    <lightning-layout vertical-align="center" class="slds-m-top_x-small">
+    <lightning-layout vertical-align="center">
         <lightning-layout-item>
             <template if:false={isFirstPage}>
-                <lightning-button-icon
-                    icon-name="utility:chevronleft"
-                    onclick={handlePrevious}
-                ></lightning-button-icon>
+                <lightning-button icon-name="utility:chevronleft" onclick={handlePrevious}></lightning-button>
             </template>
         </lightning-layout-item>
-        <lightning-layout-item>
+        <lightning-layout-item flexibility="grow">
             {totalRecords} records • page {currentPageNumber} of {totalPages}
         </lightning-layout-item>
         <lightning-layout-item>
             <template if:false={isLastPage}>
-                <lightning-button-icon
-                    icon-name="utility:chevronright"
-                    onclick={handleNext}
-                ></lightning-button-icon>
+                <lightning-button icon-name="utility:chevronright" onclick={handleNext}></lightning-button>
             </template>
         </lightning-layout-item>
     </lightning-layout>
