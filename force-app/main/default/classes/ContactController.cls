@@ -1,33 +1,44 @@
 public with sharing class ContactController {
-    @AuraEnabled(cacheable=true)
-    public static List<SimpleContact> getContacts(String sortedBy, String sortDirection) {
-
-        String queryString = 'SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact ORDER BY ';
-        queryString += sortedBy + ' ' + sortDirection;
-
+    public static List<SimpleContact> getContacts(String queryString) {
         List<Contact> contactList = Database.query(queryString);
-
         return createSimpleContact(contactList);
     }
 
-    // SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact WHERE Name LIKE '%aa%' ORDER BY Name asc
+    public static Integer getTotalRecords(String queryString) {
+        return Database.query(queryString);
+    }
+    // SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact ORDER BY Name asc LIMIT 10 OFFSET 0
+    // SELECT count() FROM Contact WHERE Name LIKE '%a%'
 
     @AuraEnabled(cacheable=true)
-    public static List<SimpleContact> searchContacts(String searchName, String sortedBy, String sortDirection) {
-        // Return all contacts when no search name
+    public static PagedResult searchContacts(String searchName, String sortedBy, String sortDirection, Integer pageNumber, Integer pageSize) {
+        PagedResult pagedResult = new PagedResult();
+        pagedResult.pageNumber = pageNumber;
+        pagedResult.pageSize = pageSize;
+        
+        // Base queries
+        String baseQueryString = 'SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact';
+        String baseCountString = 'SELECT count() FROM Contact';
+
         searchName = searchName.trim();
+        String queryString = baseQueryString;
+        String queryCountString = baseCountString;
+
+        // WHERE clause
         if (searchName == '') {
-            return getContacts(sortedBy, sortDirection);
+            queryString += ' WHERE Name LIKE ' + searchName;
+            queryCountString += ' WHERE Name LIKE ' + searchName;
         }
-        
-        // Search contact name
-        searchName = '\'%' + searchName + '%\'';
-        String queryString = 'SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact WHERE Name';
-        queryString += ' LIKE ' + searchName;
+
+        // Sorting
         queryString += ' ORDER BY ' + sortedBy + ' ' + sortDirection;
-        List<Contact> searchContactList = Database.query(queryString);
-        
-        return createSimpleContact(searchContactList);
+
+        // Paging
+        queryString += ' LIMIT ' + pageSize;
+        queryString += ' OFFSET ' + (pageNumber - 1) * pageSize;
+
+        pagedResult.records = getContacts(queryString);
+        pagedResult.totalRecords = getTotal(queryCountString);
     }
 
     static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
@@ -46,4 +57,6 @@ public with sharing class ContactController {
         }
         return simpleContacts;
     }
+
+
 }
