@@ -5,6 +5,9 @@
         "paths": {
             "c/contact-list": [
                 "contactList/contactList.js"
+            ],
+            "c/paginator": [
+                "paginator/paginator.js"
             ]
         }
     },
