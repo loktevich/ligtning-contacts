@@ -1,6 +1,6 @@
 public with sharing class ContactController {
     public static List<SimpleContact> getContacts(String queryString) {
-        List<Contact> contactList = Database.query(queryString);
+        List<Contact> contactList = Database.countQuery(queryString);
         return createSimpleContact(contactList);
     }
 
