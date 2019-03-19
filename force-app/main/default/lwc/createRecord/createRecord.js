@@ -1,52 +1,30 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { createRecord } from 'lightning/uiRecordApi';
 import CONTACT_OBJECT from '@salesforce/schema/Contact';
-import NAME_FIELD from '@salesforce/schema/Contact.Name';
+import CONTACT_NAME_FIELD from '@salesforce/schema/Contact.Name';
+import CONTACT_EMAIL_FIELD from '@salesforce/schema/Contact.Email';
+import CONTACT_CONTACTLEVEL_FIELD from '@salesforce/schema/Contact.Contact_Level__c';
+import CONTACT_ACCOUNTID_FIELD from '@salesforce/schema/Contact.AccountId';
 
 export default class CreateRecord extends LightningElement {
-    createContact() {
-        this.dispatchEvent(
-            new ShowToastEvent({
-                title: 'Success',
-                message: 'Account created',
-                variant: 'success'
-            })
-        );
-    }
-
-    createAccount() {
-        const fields = {};
-        fields[NAME_FIELD.fieldApiName] = this.name;
-        const recordInput = { apiName: CONTACT_OBJECT.objectApiName, fields };
-        createRecord(recordInput)
-            .then(account => {
-                this.accountId = account.id;
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Account created',
-                        variant: 'success'
-                    })
-                );
-            })
-            .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error creating record',
-                        message: error.message,
-                        variant: 'error'
-                    })
-                );
-            });
-    }
+    contactObj = CONTACT_OBJECT;
+    nameField = CONTACT_NAME_FIELD;
+    emailField = CONTACT_EMAIL_FIELD;
+    contactLevelField = CONTACT_CONTACTLEVEL_FIELD;
+    accountIdField = CONTACT_ACCOUNTID_FIELD;
 
     handleCancelClick() {
         this.dispatchEvent(new CustomEvent('cancel'));
     }
 
-    handleSaveClick() {
-        this.createContact();
+    createContact() {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Success',
+                message: 'Contact created',
+                variant: 'success'
+            })
+        );
         this.dispatchEvent(new CustomEvent('save'));
     }
 }
