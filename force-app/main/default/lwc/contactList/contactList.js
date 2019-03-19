@@ -4,7 +4,7 @@ import { deleteRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 
 const COLUMNS = [
-    { label: 'Name', fieldName: 'Name', sortable: true },
+    { label: 'Name', fieldName: 'NameLink', sortable: true, type: 'url', typeAttributes: { label: { fieldName: 'Name' }, target: '_blank' } },
     { label: 'Email', fieldName: 'Email', type: 'email', sortable: true },
     { label: 'Contact Level', fieldName: 'ContactLevel', sortable: true },
     { label: 'Account', fieldName: 'AccountName', sortable: true },
@@ -18,7 +18,7 @@ const DEFAULT_SORT_FIELD = 'Name';
 const DEFAULT_SORT_DIRECTION = 'asc'
 const PAGE_SIZE = 10;
 const PAGE_NUMBER = 1;
-const SEARCH_ID = 's';
+const SEARCH_ID = 1;
 
 export default class ContactList extends LightningElement {
     columns = COLUMNS;
@@ -44,7 +44,7 @@ export default class ContactList extends LightningElement {
             sortDirection: this.sortDirection,
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
-            searchId: this.searchId
+            searchId: this.searchId.toString()
         })
             .then(result => {
                 this.contacts = result;
@@ -60,6 +60,9 @@ export default class ContactList extends LightningElement {
         const sortDirection = event.detail.sortDirection;
         const fieldName = event.detail.fieldName;
         switch (fieldName) {
+            case 'NameLink':
+                this.sortField = 'Name';
+                break;
             case 'ContactLevel':
                 this.sortField = 'Contact_Level__c';
                 break;
@@ -84,6 +87,10 @@ export default class ContactList extends LightningElement {
 
     updateSearchName(event) {
         this.searchName = event.target.value;
+    }
+
+    updateSearchId() {
+        this.searchId++;
     }
 
     searchByName() {
@@ -116,7 +123,7 @@ export default class ContactList extends LightningElement {
                         variant: 'success'
                     })
                 );
-                this.searchId = Date.now().toString();
+                this.updateSearchId();
                 this.loadContacts();
             })
             .catch(error => {
@@ -136,7 +143,7 @@ export default class ContactList extends LightningElement {
 
     saveAndClose() {
         this.openModalWindow = false;
-        this.searchId = Date.now().toString();
+        this.updateSearchId();
         this.loadContacts();
     }
 

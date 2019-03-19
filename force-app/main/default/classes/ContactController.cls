@@ -46,9 +46,10 @@ public with sharing class ContactController {
     static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
         List<SimpleContact> simpleContacts = new List<SimpleContact>();
         for (Contact c : contacts) {
-           simpleContacts.add(new SimpleContact(
+            simpleContacts.add(new SimpleContact(
                c.Id,
                c.Name,
+               '/' + c.Id,
                c.Email,
                c.Contact_Level__c,
                c.Account.Name,
