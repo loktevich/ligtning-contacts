@@ -1,29 +1,42 @@
 <template>
-    <div class="slds-p-around_none">
-        <lightning-layout>
-            <lightning-layout-item flexibility="auto">
-                <lightning-input type="search" onchange={updateSearchName} class="search-input">
-                </lightning-input>
-            </lightning-layout-item>
-            <lightning-layout-item flexibility="auto" padding="horizontal-small">
-                <lightning-button variant="brand" label="Search" onclick={searchByName}>
-                </lightning-button>
-            </lightning-layout-item>
-        </lightning-layout>
-    </div>
+    <template if:true={contacts}>
 
-    <div class="slds-p-vertical_small">
-        <template if:true={contacts}>
-            <c-paginator page-number={pageNumber} page-size={pageSize} total-records={contacts.totalRecords}
-                onprevious={previousPage} onnext={nextPage}>
-            </c-paginator>
+        <template if:true={openModalWindow}>
+            <c-create-record oncancel={closeModal} onsave={saveAndClose}></c-create-record>
+        </template>
+
+        <div class="slds-p-around_none">
+            <lightning-layout>
+                <lightning-layout-item flexibility="auto">
+                    <lightning-input type="search" onchange={updateSearchName} class="search-input">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="horizontal-small">
+                    <lightning-button variant="brand" label="Search" onclick={searchByName}>
+                    </lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div class="slds-p-vertical_small">
+            <lightning-layout class="slds-p-bottom_small">
+                <lightning-layout-item>
+                    <lightning-button label="New Contact" variant="brand" onclick={openModal}></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <c-paginator page-number={pageNumber} page-size={pageSize} total-records={contacts.totalRecords}
+                        onprevious={previousPage} onnext={nextPage}>
+                    </c-paginator>
+                </lightning-layout-item>
+            </lightning-layout>
+
             <lightning-datatable key-field="id" data={contacts.records} columns={columns} sorted-by={sortedBy}
                 sorted-direction={sortDirection} onsort={updateColumnSorting} onrowaction={handleRowAction}
                 hide-checkbox-column>
             </lightning-datatable>
-        </template>
-        <template if:true={error}>
-            <p>Error retrieving data</p>
-        </template>
-    </div>
+        </div>
+    </template>
+    <template if:true={error}>
+        <p>Error retrieving data</p>
+    </template>
 </template>

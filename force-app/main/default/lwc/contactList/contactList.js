@@ -14,18 +14,24 @@ const COLUMNS = [
     { fieldName: 'delete', type: 'button', initialWidth: 120, typeAttributes: { label: 'Delete', name: 'delete', iconName: 'utility:delete' } }
 ];
 
+const DEFAULT_SORT_FIELD = 'Name';
+const DEFAULT_SORT_DIRECTION = 'asc'
 const PAGE_SIZE = 10;
+const PAGE_NUMBER = 1;
+const SEARCH_ID = 's';
 
 export default class ContactList extends LightningElement {
     columns = COLUMNS;
-    sortField = 'Name';
+    sortField = DEFAULT_SORT_FIELD;
+    searchId = SEARCH_ID;
     @track contacts;
     @track error;
     @track searchName = '';
     @track sortedBy = this.sortField;
-    @track sortDirection = 'asc';
+    @track sortDirection = DEFAULT_SORT_DIRECTION;
     @track pageSize = PAGE_SIZE;
-    @track pageNumber = 1;
+    @track pageNumber = PAGE_NUMBER;
+    @track openModalWindow = false;
 
     connectedCallback() {
         this.loadContacts();
@@ -37,7 +43,8 @@ export default class ContactList extends LightningElement {
             sortedBy: this.sortField,
             sortDirection: this.sortDirection,
             pageNumber: this.pageNumber,
-            pageSize: this.pageSize
+            pageSize: this.pageSize,
+            searchId: this.searchId
         })
             .then(result => {
                 this.contacts = result;
@@ -109,6 +116,8 @@ export default class ContactList extends LightningElement {
                         variant: 'success'
                     })
                 );
+                this.searchId = Date.now().toString();
+                this.loadContacts();
             })
             .catch(error => {
                 this.dispatchEvent(
@@ -121,4 +130,17 @@ export default class ContactList extends LightningElement {
             });
     }
 
+    openModal() {
+        this.openModalWindow = true;
+    }
+
+    saveAndClose() {
+        this.openModalWindow = false;
+        this.searchId = Date.now().toString();
+        this.loadContacts();
+    }
+
+    closeModal() {
+        this.openModalWindow = false;
+    }
 }

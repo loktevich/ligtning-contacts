@@ -11,7 +11,7 @@ public with sharing class ContactController {
     // SELECT count() FROM Contact WHERE Name LIKE '%a%'
 
     @AuraEnabled(cacheable=true)
-    public static PagedResult searchContacts(String searchName, String sortedBy, String sortDirection, Integer pageNumber, Integer pageSize) {
+    public static PagedResult searchContacts(String searchName, String sortedBy, String sortDirection, Integer pageNumber, Integer pageSize, String searchId) {
         PagedResult pagedResult = new PagedResult();
         pagedResult.pageNumber = pageNumber;
         pagedResult.pageSize = pageSize;
