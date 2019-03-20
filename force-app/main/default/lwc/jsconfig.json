@@ -6,11 +6,11 @@
             "c/contact-list": [
                 "contactList/contactList.js"
             ],
-            "c/paginator": [
-                "paginator/paginator.js"
-            ],
             "c/create-record": [
                 "createRecord/createRecord.js"
+            ],
+            "c/paginator": [
+                "paginator/paginator.js"
             ]
         }
     },

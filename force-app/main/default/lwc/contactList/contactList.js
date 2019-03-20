@@ -18,7 +18,7 @@ const DEFAULT_SORT_FIELD = 'Name';
 const DEFAULT_SORT_DIRECTION = 'asc'
 const PAGE_SIZE = 10;
 const PAGE_NUMBER = 1;
-const SEARCH_ID = 1;
+const SEARCH_ID = 0;
 
 export default class ContactList extends LightningElement {
     columns = COLUMNS;
@@ -34,6 +34,7 @@ export default class ContactList extends LightningElement {
     @track openModalWindow = false;
 
     connectedCallback() {
+        this.updateSearchId();
         this.loadContacts();
     }
 
