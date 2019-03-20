@@ -18,12 +18,11 @@ const DEFAULT_SORT_FIELD = 'Name';
 const DEFAULT_SORT_DIRECTION = 'asc'
 const PAGE_SIZE = 10;
 const PAGE_NUMBER = 1;
-const SEARCH_ID = 0;
 
 export default class ContactList extends LightningElement {
     columns = COLUMNS;
     sortField = DEFAULT_SORT_FIELD;
-    searchId = SEARCH_ID;
+    searchId = Date.now().toString();
     @track contacts;
     @track error;
     @track searchName = '';
@@ -34,7 +33,6 @@ export default class ContactList extends LightningElement {
     @track openModalWindow = false;
 
     connectedCallback() {
-        this.updateSearchId();
         this.loadContacts();
     }
 
@@ -45,7 +43,7 @@ export default class ContactList extends LightningElement {
             sortDirection: this.sortDirection,
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
-            searchId: this.searchId.toString()
+            searchId: this.searchId
         })
             .then(result => {
                 this.contacts = result;
@@ -91,7 +89,7 @@ export default class ContactList extends LightningElement {
     }
 
     updateSearchId() {
-        this.searchId++;
+        this.searchId = Date.now().toString();
     }
 
     searchByName() {
