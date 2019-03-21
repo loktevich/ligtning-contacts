@@ -1,7 +1,5 @@
 import { LightningElement, track } from 'lwc';
 import searchContacts from '@salesforce/apex/ContactController.searchContacts';
-import { deleteRecord } from 'lightning/uiRecordApi';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 
 const COLUMNS = [
     { label: 'Name', fieldName: 'NameLink', sortable: true, type: 'url', typeAttributes: { label: { fieldName: 'Name' }, target: '_blank' } },
@@ -23,6 +21,7 @@ export default class ContactList extends LightningElement {
     columns = COLUMNS;
     sortField = DEFAULT_SORT_FIELD;
     searchId = Date.now().toString();
+    @track recordId;
     @track contacts;
     @track error;
     @track searchName = '';
@@ -31,6 +30,7 @@ export default class ContactList extends LightningElement {
     @track pageSize = PAGE_SIZE;
     @track pageNumber = PAGE_NUMBER;
     @track openModalWindow = false;
+    @track confirmDelete = false;
 
     connectedCallback() {
         this.loadContacts();
@@ -107,46 +107,23 @@ export default class ContactList extends LightningElement {
     }
 
     handleRowAction(event) {
-        const row = event.detail.row;
-        this.deleteRow(row)
-    }
-
-    deleteRow(row) {
-        const recordId = row.Id;
-        deleteRecord(recordId)
-            .then(() => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Contact deleted',
-                        variant: 'success'
-                    })
-                );
-                this.updateSearchId();
-                this.loadContacts();
-            })
-            .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error deleting record',
-                        message: error.message,
-                        variant: 'error'
-                    })
-                );
-            });
+        this.recordId = event.detail.row.Id;
+        this.confirmDelete = true;
     }
 
     openModal() {
         this.openModalWindow = true;
     }
 
-    saveAndClose() {
+    closeAndUpdate() {
         this.openModalWindow = false;
+        this.confirmDelete = false;
         this.updateSearchId();
         this.loadContacts();
     }
 
     closeModal() {
         this.openModalWindow = false;
+        this.confirmDelete = false;
     }
 }

@@ -7,8 +7,6 @@ public with sharing class ContactController {
     public static Integer getTotalRecords(String queryString) {
         return Database.countQuery(queryString);
     }
-    // SELECT Id, Name, Email, Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate FROM Contact ORDER BY Name asc LIMIT 10 OFFSET 0
-    // SELECT count() FROM Contact WHERE Name LIKE '%a%'
 
     @AuraEnabled(cacheable=true)
     public static PagedResult searchContacts(String searchName, String sortedBy, String sortDirection, Integer pageNumber, Integer pageSize, String searchId) {
@@ -43,6 +41,12 @@ public with sharing class ContactController {
         return pagedResult;
     }
 
+    @AuraEnabled(cacheable=true)
+    public static List<Case> hasCases(String contactId){
+        List<Case> cases = new List<Case>([SELECT Id FROM Case WHERE ContactId=:contactId]);
+        return cases;
+    }
+
     static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
         List<SimpleContact> simpleContacts = new List<SimpleContact>();
         for (Contact c : contacts) {
@@ -60,6 +64,6 @@ public with sharing class ContactController {
         }
         return simpleContacts;
     }
-
-
 }
+
+// SELECT Id FROM Case WHERE ContactId='0030o00002goitrAAA'

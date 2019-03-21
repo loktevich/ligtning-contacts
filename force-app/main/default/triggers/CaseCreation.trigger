@@ -1,6 +1,7 @@
 trigger CaseCreation on Contact (after insert) {
     List<Case> cases = new List<Case>();
 
+    // Find contacts with accounts
     Map<Id,Contact> contactsWithAccs = new Map<Id,Contact>([SELECT Id, Account.OwnerId FROM Contact WHERE AccountId!=NULL AND Id IN :Trigger.new]); 
 
     for (Contact contact : Trigger.new) {
@@ -26,5 +27,3 @@ trigger CaseCreation on Contact (after insert) {
     }
     insert cases;
 }
-
-// SELECT AccountId FROM Contact WHERE AccountId!=NULL LIMIT 10

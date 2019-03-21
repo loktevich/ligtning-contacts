@@ -11,6 +11,9 @@
             ],
             "c/paginator": [
                 "paginator/paginator.js"
+            ],
+            "c/confirm-delete": [
+                "confirmDelete/confirmDelete.js"
             ]
         }
     },

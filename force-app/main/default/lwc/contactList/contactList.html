@@ -2,7 +2,11 @@
     <template if:true={contacts}>
 
         <template if:true={openModalWindow}>
-            <c-create-record oncancel={closeModal} onsave={saveAndClose}></c-create-record>
+            <c-create-record oncancel={closeModal} onsave={closeAndUpdate}></c-create-record>
+        </template>
+
+        <template if:true={confirmDelete}>
+            <c-confirm-delete record-id={recordId} oncancel={closeModal} ondelete={closeAndUpdate}></c-confirm-delete>
         </template>
 
         <div class="slds-p-around_none">
