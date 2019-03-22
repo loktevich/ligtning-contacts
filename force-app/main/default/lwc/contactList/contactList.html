@@ -27,7 +27,7 @@
                 <lightning-layout-item>
                     <lightning-button label="New Contact" variant="brand" onclick={openModal}></lightning-button>
                 </lightning-layout-item>
-                <lightning-layout-item>
+                <lightning-layout-item class="slds-m-left_medium">
                     <c-paginator page-number={pageNumber} page-size={pageSize} total-records={contacts.totalRecords}
                         onprevious={previousPage} onnext={nextPage}>
                     </c-paginator>
