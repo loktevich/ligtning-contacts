@@ -64,7 +64,7 @@ public with sharing class TestContactController {
     }
 
     @isTest static void testSearchManyNames() {
-        List<Contact> testContacts = TestContactController.createContacts(11, 1);
+        List<Contact> testContacts = TestContactController.createContacts(10, 1);
         insert testContacts;
         String searchName = 'First1';
         String sortedBy = 'Name';
@@ -78,13 +78,13 @@ public with sharing class TestContactController {
         Test.stopTest();
 
         // The number of resulting contacts is 2
-        System.assertEquals(1, contacts.records.size());
-        System.assertEquals(1, contacts.totalRecords);
+        System.assertEquals(2, contacts.records.size());
+        System.assertEquals(2, contacts.totalRecords);
         
         // The names are 'First1 Last1' and 'First11 Last11'
         List<SimpleContact> records = contacts.records;
         System.assertEquals('First1 Last1', records[0].Name);
-        System.assertEquals('First11 Last11', records[1].Name);
+        System.assertEquals('First10 Last10', records[1].Name);
     }
 
     @isTest static void testSearchNotExistedName() {

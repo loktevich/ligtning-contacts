@@ -10,8 +10,8 @@ public with sharing class TestCaseCreation {
 
         List<Case> cases = [SELECT OwnerId FROM Case];
         
-        // Zero cases
-        System.assertEquals(0, cases.size());
+        // Two cases
+        System.assertEquals(2, cases.size());
         System.assert(result[0].isSuccess());
         System.assert(result[0].getErrors().size() == 0);
     }
@@ -19,6 +19,8 @@ public with sharing class TestCaseCreation {
     @isTest static void testForContactsWithAccounts() {
         List<Contact> testContacts = TestContactController.createContacts(2, 1);
         Account acct = new Account(Name='Test Account');
+        User owner = [SELECT Id FROM USER LIMIT 1];
+        acct.OwnerId = owner.Id;
         insert acct;
         for(Contact contact : testContacts) {
             contact.AccountId=acct.Id;
@@ -28,7 +30,7 @@ public with sharing class TestCaseCreation {
         List<Database.SaveResult> result = Database.insert(testContacts);
         Test.stopTest();
 
-        List<Case> cases = [SELECT OwnerId FROM Case];
+        List<Case> cases = [SELECT ContactId, AccountId, Status, Origin, OwnerId FROM Case];
         
         // Two cases
         System.assertEquals(2, cases.size());
@@ -52,11 +54,11 @@ public with sharing class TestCaseCreation {
         Test.stopTest();
 
         List<Case> cases = [SELECT Priority FROM Case];
-        System.assertEquals('Primary', cases[0].Priority);
+        System.assertEquals('High', cases[0].Priority);
     }
 
     @isTest static void testSecondaryContact() {
-        List<Contact> testContacts = TestContactController.createContacts(1, 2);
+        List<Contact> testContacts = TestContactController.createContacts(2, 2);
         Contact testContact = testContacts[0];
 
         Test.startTest();
@@ -64,11 +66,11 @@ public with sharing class TestCaseCreation {
         Test.stopTest();
 
         List<Case> cases = [SELECT Priority FROM Case];
-        System.assertEquals('Secondary', cases[0].Priority);
+        System.assertEquals('Medium', cases[0].Priority);
     }
 
     @isTest static void testTertiaryContact() {
-        List<Contact> testContacts = TestContactController.createContacts(1, 3);
+        List<Contact> testContacts = TestContactController.createContacts(3, 3);
         Contact testContact = testContacts[0];
 
         Test.startTest();
@@ -76,6 +78,6 @@ public with sharing class TestCaseCreation {
         Test.stopTest();
 
         List<Case> cases = [SELECT Priority FROM Case];
-        System.assertEquals('Tertiary', cases[0].Priority);
+        System.assertEquals('Low', cases[0].Priority);
     }
 }

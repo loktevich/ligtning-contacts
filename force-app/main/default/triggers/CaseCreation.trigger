@@ -19,7 +19,7 @@ trigger CaseCreation on Contact (after insert) {
                 c.Priority = 'High';
             } else if (contactLevel.equals('Secondary')) {
                 c.Priority = 'Medium';
-            } else {
+            } else if (contactLevel.equals('Tertiary')) {
                 c.Priority = 'Low';
             }
         }
