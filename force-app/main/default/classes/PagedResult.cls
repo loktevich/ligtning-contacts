@@ -9,7 +9,7 @@ public with sharing class PagedResult {
     public Integer totalRecords { get;set; }
     
     @AuraEnabled
-    public List<Object> records { get;set; }
+    public List<SimpleContact> records { get;set; }
 
     public PagedResult() { }
 }

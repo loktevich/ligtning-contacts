@@ -9,9 +9,6 @@ public class SimpleContact {
     @AuraEnabled public String CreatedBy{ get; set; }
     @AuraEnabled public Datetime CreatedDate{ get; set; }
 
-    public SimpleContact() {
-    }
-
     public SimpleContact(String id, String name, String nameLink, String email, String contactLevel, String accountName, String ownerName, String createdBy, Datetime createdDate) {
         this.Id = id;
         this.Name = name;

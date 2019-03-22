@@ -3,6 +3,9 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "c/confirm-delete": [
+                "confirmDelete/confirmDelete.js"
+            ],
             "c/contact-list": [
                 "contactList/contactList.js"
             ],
@@ -11,9 +14,6 @@
             ],
             "c/paginator": [
                 "paginator/paginator.js"
-            ],
-            "c/confirm-delete": [
-                "confirmDelete/confirmDelete.js"
             ]
         }
     },
