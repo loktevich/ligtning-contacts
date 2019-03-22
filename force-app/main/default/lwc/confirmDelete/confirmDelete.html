@@ -10,17 +10,9 @@
                     </header>
                     <center>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-window">
-                            {recordId}
-                            {cases.data}
-                            <template if:true={cases.data}>
-                                <p>
-                                    There is associated cases for the contact. Are you sure to delete contact and it's
-                                    cases?
-                                </p>
-                            </template>
-                            <template if:true={cases.error}>
-                                <p>Are you sure to delete contact?</p>
-                            </template>
+                            <p>
+                                This action will delete the contact and all associated cases. Are you sure?
+                            </p>
                         </div>
                     </center>
                     <footer class="slds-modal__footer">

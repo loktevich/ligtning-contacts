@@ -1,12 +1,9 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
-import hasCases from '@salesforce/apex/ContactController.hasCases';
 
 export default class ConfirmDelete extends LightningElement {
     @api recordId;
-
-    @wire(hasCases, { contactId: '@recordId' }) cases;
 
     handleCancelClick() {
         this.dispatchEvent(new CustomEvent('cancel'));

@@ -1,10 +1,10 @@
 public with sharing class ContactController {
-    public static List<SimpleContact> getContacts(String queryString) {
+    private static List<SimpleContact> getContacts(String queryString) {
         List<Contact> contactList = Database.query(queryString);
         return createSimpleContact(contactList);
     }
 
-    public static Integer getTotalRecords(String queryString) {
+    private static Integer getTotalRecords(String queryString) {
         return Database.countQuery(queryString);
     }
 
@@ -41,13 +41,7 @@ public with sharing class ContactController {
         return pagedResult;
     }
 
-    @AuraEnabled(cacheable=true)
-    public static List<Case> hasCases(String contactId){
-        List<Case> cases = new List<Case>([SELECT Id FROM Case WHERE ContactId=:contactId]);
-        return cases;
-    }
-
-    static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
+    private static List<SimpleContact> createSimpleContact(List<Contact> contacts) {
         List<SimpleContact> simpleContacts = new List<SimpleContact>();
         for (Contact c : contacts) {
             simpleContacts.add(new SimpleContact(
@@ -65,5 +59,3 @@ public with sharing class ContactController {
         return simpleContacts;
     }
 }
-
-// SELECT Id FROM Case WHERE ContactId='0030o00002goitrAAA'
