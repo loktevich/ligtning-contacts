@@ -9,7 +9,7 @@ const COLUMNS = [
     { label: 'Owner', fieldName: 'OwnerName', sortable: true },
     { label: 'Created By', fieldName: 'CreatedBy', sortable: true },
     { label: 'Created Date', fieldName: 'CreatedDate', type: 'date', sortable: true },
-    { fieldName: 'delete', type: 'button', initialWidth: 120, typeAttributes: { label: 'Delete', name: 'delete', iconName: 'utility:delete' } }
+    { fieldName: 'delete', type: 'button', initialWidth: 100, typeAttributes: { label: 'Del', name: 'delete', iconName: 'utility:delete' } }
 ];
 
 const DEFAULT_SORT_FIELD = 'Name';
